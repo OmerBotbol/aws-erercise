@@ -5,9 +5,7 @@ function Item({ shoppingItem, addToCart }) {
     <>
       <li>
         {shoppingItem.name} {shoppingItem.price}$
-        <button onClick={() => addToCart(shoppingItem.name)}>
-          Add To Cart
-        </button>
+        <button onClick={() => addToCart(shoppingItem)}>Add To Cart</button>
       </li>
     </>
   );

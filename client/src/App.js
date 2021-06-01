@@ -4,6 +4,8 @@ import ShopPage from "./components/ShopPage";
 
 function App() {
   const [moveToCart, setMoveToCart] = useState(false);
+  const [cart, setCart] = useState([]);
+  const [sum, setSum] = useState(0);
   const shoppingItems = [
     { name: "T-Shirt", price: 30 },
     { name: "Pants", price: 20 },
@@ -12,22 +14,28 @@ function App() {
     { name: "Socks", price: 10 },
     { name: "Accessories", price: 15 },
   ];
-  const cart = [];
   const addToCart = (itemToAdd) => {
-    const index = cart.findIndex((item) => item.name === itemToAdd);
+    const index = cart.findIndex((item) => item.name === itemToAdd.name);
     if (index === -1) {
-      return cart.push({
-        name: itemToAdd,
-        quantity: 1,
-      });
+      setCart((prev) => [
+        ...prev,
+        {
+          name: itemToAdd.name,
+          totalPrice: itemToAdd.price,
+          quantity: 1,
+        },
+      ]);
+    } else {
+      cart[index].quantity++;
+      cart[index].totalPrice = cart[index].totalPrice + itemToAdd.price;
     }
-    return cart[index].quantity++;
+    setSum((prev) => prev + itemToAdd.price);
   };
 
   return (
     <>
       {moveToCart ? (
-        <CartPage cart={cart} />
+        <CartPage cart={cart} sum={sum} />
       ) : (
         <ShopPage shoppingItems={shoppingItems} addToCart={addToCart} />
       )}
