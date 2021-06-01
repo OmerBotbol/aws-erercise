@@ -1,11 +1,12 @@
 import React from "react";
 
-function CartItem({ item }) {
+function CartItem({ item, removeFromCart }) {
   return (
     <>
       <li>
-        {item.name} {item.totalPrice}$
+        {item.quantity} {item.name} {item.totalPrice}$
       </li>
+      <button onClick={() => removeFromCart(item)}>Remove</button>
     </>
   );
 }

@@ -32,10 +32,34 @@ function App() {
     setSum((prev) => prev + itemToAdd.price);
   };
 
+  const removeFromCart = (itemToRemove) => {
+    const itemData = shoppingItems.find(
+      (item) => item.name === itemToRemove.name
+    );
+    const currentTotalPrice = itemToRemove.totalPrice - itemData.price;
+    const updatedCart = cart.map((item) => {
+      if (item.name === itemToRemove.name) {
+        item.quantity--;
+        item.totalPrice = currentTotalPrice;
+      }
+      return item;
+    });
+    if (currentTotalPrice === 0) {
+      const index = updatedCart.findIndex(
+        (item) => item.name === itemToRemove.name
+      );
+      updatedCart.splice(index, 1);
+      setCart(updatedCart);
+    } else {
+      setCart(updatedCart);
+    }
+    setSum((prev) => prev - itemData.price);
+  };
+
   return (
     <>
       {moveToCart ? (
-        <CartPage cart={cart} sum={sum} />
+        <CartPage cart={cart} sum={sum} removeFromCart={removeFromCart} />
       ) : (
         <ShopPage shoppingItems={shoppingItems} addToCart={addToCart} />
       )}
