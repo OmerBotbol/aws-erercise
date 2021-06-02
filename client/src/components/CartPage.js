@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import CartItem from "./CartItem";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 function CartPage({ cart, sum, removeFromCart }) {
   const [name, setName] = useState("");
@@ -8,15 +10,27 @@ function CartPage({ cart, sum, removeFromCart }) {
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
-    console.log(`Thanks for buying in MyShop, ${name}!`);
-    console.log(`The items will send to ${address}`);
-    console.log(`You will get alarm before approaching to ${phoneNumber}`);
-    console.log(`A list of the items you ordered sent to ${email}`);
+    axios
+      .post("/submit", {
+        Id: uuidv4(),
+        name: name,
+        address: address,
+        phoneNumber: phoneNumber,
+        email: email,
+        orderList: cart,
+        sumPrice: sum,
+      })
+      .then(() => {
+        console.log(`Thanks for buying in MyShop, ${name}!`);
+        console.log(`The items will send to ${address}`);
+        console.log(`You will get alarm before approaching to ${phoneNumber}`);
+        console.log(`A list of the items you ordered sent to ${email}`);
+        debugger;
+      });
   };
 
   return (
     <>
-      {console.log(cart)}
       <form>
         <h1>My Cart</h1>
         <label>Full Name: </label>
