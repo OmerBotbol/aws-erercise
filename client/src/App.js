@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CartPage from "./components/CartPage";
 import ShopPage from "./components/ShopPage";
+import axios from "axios";
 
 function App() {
   const [moveToCart, setMoveToCart] = useState(false);
   const [cart, setCart] = useState([]);
   const [sum, setSum] = useState(0);
-  const shoppingItems = [
-    { name: "T-Shirt", price: 30 },
-    { name: "Pants", price: 20 },
-    { name: "Dress", price: 50 },
-    { name: "Shoes", price: 25 },
-    { name: "Socks", price: 10 },
-    { name: "Accessories", price: 15 },
-  ];
+  const [shoppingItems, setShoppingItems] = useState([]);
+
+  useEffect(() => {
+    axios.get("/shopping-items").then((data) => {
+      setShoppingItems(data.data);
+    });
+  }, []);
+
   const addToCart = (itemToAdd) => {
     const index = cart.findIndex((item) => item.name === itemToAdd.name);
     if (index === -1) {
